@@ -1,24 +1,23 @@
-const brain = require("./system/brain.js");
-const trainingData = [
-    'Jane saw Doug.',
-    'Doug saw Jane.',
-    'Spot saw Doug and Jane looking at each other.',
-    'It was love at first sight, and Spot had a frontrow seat. It was a very special moment for all.'
-];
+const { network } = require('./system/network');
+const brain = require("brain.js");
+const http = require('http');
+const fs = require('fs');
 
-const lstm = new brain.recurrent.LSTM();
-const result = lstm.train(trainingData, {
-    iterations: 1500,
-    log: details => console.log(details),
-    errorThresh: 0.011
+const data = require('../models/data.json');
+const networkPath = '../cache/network.json';
+const logPath = '../cache/log.txt';
+
+network("My drive has a capacity of 9TB");
+
+const PORT = 8080;
+
+fs.readFile('./monitor/index.html', function (err, html) {
+
+    if (err) throw err;
+
+    http.createServer(function (request, response) {
+        response.writeHeader(200, { "Content-Type": "text/html" });
+        response.write(html);
+        response.end();
+    }).listen(PORT);
 });
-
-const run1 = lstm.run('Jane');
-const run2 = lstm.run('Doug');
-const run3 = lstm.run('Spot');
-const run4 = lstm.run('It');
-
-console.log('run 1: Jane' + run1);
-console.log('run 2: Doug' + run2);
-console.log('run 3: Spot' + run3);
-console.log('run 4: It' + run4);
