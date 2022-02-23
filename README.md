@@ -1,8 +1,10 @@
 # ASAN-NA
-## Automatic Sorting Applet using Neural Network Algorithms
+**Automatic Sorting Applet using Neural Network Algorithms**
+<br/>
+Development is still in progress...
 
-### Dependencies
+## Dependencies
 
-### Features
+## Features
 
-### Updates and Issues
+## Updates and Issues

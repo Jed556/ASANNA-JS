@@ -17,5 +17,7 @@
   "bugs": {
     "url": "https://github.com/Jed556/ASAN-NA/issues"
   },
-  "homepage": "https://github.com/Jed556/ASAN-NA#readme"
+  "homepage": "https://github.com/Jed556/ASAN-NA#readme",
+  "dependencies": {
+  }
 }
