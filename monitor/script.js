@@ -7,7 +7,6 @@ function drawChart() {
     data.addColumn('number', '500MB Model');
     data.addColumn('number', '1GB Model');
     data.addColumn('number', '2GB Model');
-
     data.addRows([
         [1, 37.8, 80.8, 41.8],
         [2, 30.9, 69.5, 32.4],
@@ -34,7 +33,7 @@ function drawChart() {
         height: 500,
     };
 
-    var chart = new google.charts.Line(document.getElementById('line_top_x'));
+    var chart = new google.charts.Line(document.getElementById('chart'));
 
     chart.draw(data, google.charts.Line.convertOptions(options));
 }
