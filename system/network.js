@@ -1,10 +1,14 @@
 const brain = require("brain.js");
 const fs = require('fs');
-const data = require('../models/data.json');
-const networkPath = '../cache/network.json';
-const logPath = '../cache/log.txt';
+const networkPath = './cache/network.json';
 
-function network(input){
+/**
+* @param { String } input String to be predicted
+* @param { String } data Path of training data
+* @returns { String } Iterations & Training Error || Predicted category
+*/
+
+function network(input, data) {
     const trainingData = data.map(item => ({
         input: item.text,
         output: item.category
