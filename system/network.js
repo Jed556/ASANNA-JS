@@ -1,11 +1,13 @@
-const brain = require("brain.js");
 const fs = require('fs');
-const networkPath = './cache/network.json';
+const brain = require("brain.js");
+const config = require('./config.json');
+const trainCache = './cache/trained.json';
+const history = './cache/history.json';
 
 /**
 * @param { String } input String to be predicted
 * @param { String } data Path of training data
-* @returns { String } Iterations & Training Error || Predicted category
+* @returns { String } Logs & JSON trained data
 */
 
 function network(input, data) {
@@ -14,22 +16,57 @@ function network(input, data) {
         output: item.category
     }));
 
+    let result;
     const network = new brain.recurrent.LSTM();
-    let networkData = null;
-    if (fs.existsSync(networkPath)) {
-        networkData = JSON.parse(fs.readFileSync(networkPath));
-        network.fromJSON(networkData);
+    const trainedNet = new brain.recurrent.LSTM();
+
+    if (config.continuous) {
+        if (fs.existsSync(trainCache)) {
+            const trainedData = JSON.parse(fs.readFileSync(trainCache));
+            trainedNet.fromJSON(trainedData);
+            result = trainedNet.train(trainingData, {
+                iterations: config.iterations || 2000,
+                errorThresh: config.errorThresh || 0.011,
+                learningRate: config.learningRate || 0.001,
+                momentum: config.momentum || null,
+                logPeriod: config.logPeriod || 10,
+                log: stats => console.log(stats),
+                timeout: config.timeout || Infinity,
+                // callback: null,  callbackPeriod: 10,
+            });
+            try { fs.writeFileSync(trainCache, JSON.stringify(trainedNet.toJSON(), null, 2)) } catch (e) { console.log(e) };
+        } else {
+            network.train(trainingData, {
+                iterations: config.iterations || 2000,
+                learningRate: config.learningRate || 0.001,
+                errorThresh: config.errorThresh || 0.001,
+                logPeriod: config.logPeriod || 10,
+                log: stats => console.log(stats)
+            });
+            try { fs.writeFileSync(trainCache, JSON.stringify(network.toJSON(), null, 2)) } catch (e) { console.log(e) };
+        }
     } else {
-        const result = network.train(trainingData, {
-            iterations: 100,
-            log: details => console.log(details),
-            errorThresh: 0.011
-        });
-        fs.writeFileSync(networkPath, JSON.stringify(network.toJSON(), null, 2));
+        if (fs.existsSync(trainCache)) {
+            const networkData = JSON.parse(fs.readFileSync(trainCache));
+            network.fromJSON(networkData);
+        } else {
+            result = network.train(trainingData, {
+                iterations: config.iterations || 2000,
+                errorThresh: config.errorThresh || 0.011,
+                learningRate: config.learningRate || 0.001,
+                momentum: config.momentum || null,
+                logPeriod: config.logPeriod || 10,
+                log: stats => console.log(stats),
+                timeout: config.timeout || Infinity,
+                // callback: null,  callbackPeriod: 10,
+            });
+            try { fs.writeFileSync(trainCache, JSON.stringify(network.toJSON(), null, 2)) } catch (e) { console.log(e) };
+        }
     }
 
     const output = network.run(input);
     console.log(output);
+    try { fs.writeFileSync(history, output) } catch (e) { console.log(e) };
 }
 
 module.exports.network = network;

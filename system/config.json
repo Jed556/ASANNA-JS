@@ -1,0 +1,9 @@
+{
+    "momentum": null,
+    "iterations": 100,
+    "errorThresh": 0.005,
+    "learningRate": 0.001,
+    "logPeriod": 5,
+    "timeout": null,
+    "continuous": true
+}

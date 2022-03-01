@@ -1,5 +1,9 @@
 [
     {
+        "text": "Trade",
+        "category": "trade"
+    },
+    {
         "text": "Overseas trade indexes",
         "category": "trade"
     },
@@ -24,23 +28,79 @@
         "category": "trade"
     },
     {
-        "text": "Research and development survey",
+        "text": "Another company is willing to trade",
+        "category": "trade"
+    },
+    {
+        "text": "We need to look for possible innovations",
+        "category": "research"
+    },
+    {
+        "text": "We have to search for our project",
         "category": "research"
     },
     {
         "text": "Research and development survey",
+        "category": "research"
+    },
+    {
+        "text": "Search for business strategies",
+        "category": "research"
+    },
+    {
+        "text": "We need to research for marketing techniques",
+        "category": "research"
+    },
+    {
+        "text": "Stocks",
         "category": "stocks"
     },
     {
-        "text": "Research and development survey",
+        "text": "Our stocks are low",
+        "category": "stocks"
+    },
+    {
+        "text": "Income",
         "category": "income"
     },
     {
-        "text": "tax",
+        "text": "Monthly income",
+        "category": "income"
+    },
+    {
+        "text": "Our company's sales are low",
+        "category": "income"
+    },
+    {
+        "text": "Our income is low",
+        "category": "income"
+    },
+    {
+        "text": "The income is high",
+        "category": "income"
+    },
+    {
+        "text": "Tax",
         "category": "tax"
     },
     {
-        "text": "employee",
+        "text": "We need to pay taxes",
+        "category": "tax"
+    },
+    {
+        "text": "Employee",
+        "category": "employee"
+    },
+    {
+        "text": "An employee violated the rules",
+        "category": "employee"
+    },
+    {
+        "text": "Give the employees a raise",
+        "category": "employee"
+    },
+    {
+        "text": "An employee filed a resignation",
         "category": "employee"
     }
 ]
