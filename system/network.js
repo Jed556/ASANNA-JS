@@ -83,17 +83,12 @@ function train(network, data) {
         logPeriod: config.logPeriod ?? defConfig.logPeriod,
         log: stats => {
             let log = stats.replace(/\s/g, '').split(/[,:]/);
-            console.log(`TRAIN | iterations: ${(log[1]).padStart((config.iterations || defConfig.iterations).toString().length, "0")}, error: ${(+log[3]).toFixed(15)}, time: ${(new Date() - tTime) > 3600000 ?
-                (((new Date() - tTime) / 1000 / 60 / 60)).toFixed(2).padStart(5, "0") + " hr"
-                : (new Date() - tTime) > 60000 ? (((new Date() - tTime) / 1000 / 60)).toFixed(2).padStart(5, "0") + " min"
-                    : (((new Date() - tTime) / 1000)).toFixed(2).padStart(5, "0") + " sec"}`)
+            //let eTime = (new Date(new Date() - tTime)).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");    //Beta time handler
+            console.log(`TRAIN | iterations: ${(log[1]).padStart((config.iterations || defConfig.iterations).toString().length, "0")}, error: ${(+log[3]).toFixed(15)}, time: ${(new Date() - tTime).toTimeString()}`);
         },
         timeout: config.timeout ?? Infinity,
     });
-    console.log(`FINAL | iterations: ${result.iterations}, error: ${result.error.toFixed(15)}, time: ${(new Date() - tTime) > 3600000 ?
-        (((new Date() - tTime) / 1000 / 60 / 60)).toFixed(2).padStart(5, "0") + " hr"
-        : (new Date() - tTime) > 60000 ? (((new Date() - tTime) / 1000 / 60)).toFixed(2).padStart(5, "0") + " min"
-            : (((new Date() - tTime) / 1000)).toFixed(2).padStart(5, "0") + " sec"}`)
+    console.log(`FINAL | iterations: ${result.iterations}, error: ${result.error.toFixed(15)}, time: ${(new Date() - tTime).toTimeString()}`);
 
     try { fs.writeFileSync(trainCache, JSON.stringify(network.toJSON(), null, 2)) } catch (e) { console.log(e) };
 
@@ -109,5 +104,28 @@ function run(network, input) {
     try { fs.writeFileSync(history, output) } catch (e) { console.log(e) };
     return console.log(output);
 }
+
+/**
+ * Convert (milli)seconds to time string (hh:mm:ss[:mss]).
+ *
+ * @param Boolean seconds
+ *
+ * @return String
+ */
+Number.prototype.toTimeString = function (seconds) {
+    var _24HOURS = 8.64e7;  // 24*60*60*1000
+
+    var ms = seconds ? this * 1000 : this,
+        endPos = ~(4 * !!seconds),  // to trim "Z" or ".sssZ"
+        timeString = new Date(ms).toISOString().slice(11, endPos);
+
+    if (ms >= _24HOURS) {  // to extract ["hh", "mm:ss[.mss]"]
+        var parts = timeString.split(/:(?=\d{2}:)/);
+        parts[0] -= -24 * Math.floor(ms / _24HOURS);
+        timeString = parts.join(":");
+    }
+
+    return timeString;
+};
 
 module.exports.network = main;
