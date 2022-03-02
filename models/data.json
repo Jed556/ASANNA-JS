@@ -48,10 +48,6 @@
         "category": "trade"
     },
     {
-        "text": "There is not enough supply in the logistics facility",
-        "category": "trade"
-    },
-    {
         "text": "The shipping company is not able to deliver the goods",
         "category": "trade"
     },
@@ -96,12 +92,40 @@
         "category": "research"
     },
     {
-        "text": "Stocks",
-        "category": "stocks"
+        "text": "Supply",
+        "category": "supply"
     },
     {
-        "text": "Our stocks are low",
-        "category": "stocks"
+        "text": "Our supply is low",
+        "category": "supply"
+    },
+    {
+        "text": "Our supplies are low",
+        "category": "supply"
+    },
+    {
+        "text": "We need more supplies",
+        "category": "supply"
+    },
+    {
+        "text": "The supplies exceeded our facility's maximum capacity",
+        "category": "supply"
+    },
+    {
+        "text": "The amount of supplies exceeded our storage's max capacity",
+        "category": "supply"
+    },
+    {
+        "text": "There is not enough supply in the logistics facility",
+        "category": "supply"
+    },
+    {
+        "text": "We need to produce more products",
+        "category": "supply"
+    },
+    {
+        "text": "Statistics show that our supply is low",
+        "category": "supply"
     },
     {
         "text": "Income",
