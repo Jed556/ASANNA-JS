@@ -3,7 +3,7 @@ const http = require('http');
 const fs = require('fs');
 
 const data = require('./models/data.json');
-let input = "we need to search for other techniques"
+let input = ""
 
 const PORT = 8080;
 
