@@ -1,6 +1,6 @@
 {
     "momentum": null,
-    "iterations": 2500,
+    "iterations": 2000,
     "errorThresh": 0.005,
     "learningRate": 0.001,
     "logPeriod": 5,
