@@ -32,6 +32,34 @@
         "category": "trade"
     },
     {
+        "text": "Trading system",
+        "category": "trade"
+    },
+    {
+        "text": "Trading system",
+        "category": "trade"
+    },
+    {
+        "text": "Build a sustainable trading system",
+        "category": "trade"
+    },
+    {
+        "text": "Deliveries are late",
+        "category": "trade"
+    },
+    {
+        "text": "There is not enough supply in the logistics facility",
+        "category": "trade"
+    },
+    {
+        "text": "The shipping company is not able to deliver the goods",
+        "category": "trade"
+    },
+    {
+        "text": "The supply is not delivered on time",
+        "category": "trade"
+    },
+    {
         "text": "We need to look for possible innovations",
         "category": "research"
     },
@@ -49,6 +77,22 @@
     },
     {
         "text": "We need to research for marketing techniques",
+        "category": "research"
+    },
+    {
+        "text": "The company needs a more efficient learning method",
+        "category": "research"
+    },
+    {
+        "text": "Seek for new or better opportunities",
+        "category": "research"
+    },
+    {
+        "text": "Gather data from the market",
+        "category": "research"
+    },
+    {
+        "text": "Look for trending products",
         "category": "research"
     },
     {
@@ -80,11 +124,43 @@
         "category": "income"
     },
     {
+        "text": "The company's income is unstable",
+        "category": "income"
+    },
+    {
+        "text": "Our business is experiencing a financial crisis",
+        "category": "income"
+    },
+    {
         "text": "Tax",
         "category": "tax"
     },
     {
         "text": "We need to pay taxes",
+        "category": "tax"
+    },
+    {
+        "text": "The company is penalized for late payment",
+        "category": "tax"
+    },
+    {
+        "text": "We are penalized for late filing",
+        "category": "tax"
+    },
+    {
+        "text": "Our company is penalized for inaccurate tax return",
+        "category": "tax"
+    },
+    {
+        "text": "The required tax return is not yet filed",
+        "category": "tax"
+    },
+    {
+        "text": "The company is being audited by the IRS",
+        "category": "tax"
+    },
+    {
+        "text": "I made an error and the IRS adjusted the refund/balance owed",
         "category": "tax"
     },
     {
@@ -101,6 +177,42 @@
     },
     {
         "text": "An employee filed a resignation",
+        "category": "employee"
+    },
+    {
+        "text": "I would like to resign",
+        "category": "employee"
+    },
+    {
+        "text": "We have to inform the employees about the new rules",
+        "category": "employee"
+    },
+    {
+        "text": "We need to tell the employees about the terms of employment",
+        "category": "employee"
+    },
+    {
+        "text": "Recruit more employees",
+        "category": "employee"
+    },
+    {
+        "text": "An employee violated the rules",
+        "category": "employee"
+    },
+    {
+        "text": "Someone violated the rules",
+        "category": "employee"
+    },
+    {
+        "text": "He or she is a new employee",
+        "category": "employee"
+    },
+    {
+        "text": "He filed a report due to her actions",
+        "category": "employee"
+    },
+    {
+        "text": "She did illegal actions",
         "category": "employee"
     }
 ]
