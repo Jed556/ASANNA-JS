@@ -22,6 +22,7 @@ function network(input, data) {
 
     if (config.continuous) {
         if (fs.existsSync(trainCache)) {
+            let tTime = new Date();
             const trainedData = JSON.parse(fs.readFileSync(trainCache));
             trainedNet.fromJSON(trainedData);
             result = trainedNet.train(trainingData, {
@@ -30,18 +31,19 @@ function network(input, data) {
                 learningRate: config.learningRate || 0.001,
                 momentum: config.momentum || null,
                 logPeriod: config.logPeriod || 10,
-                log: stats => console.log(stats),
+                log: stats => console.log(`${stats}, time: ${((new Date() - tTime) / 1000 / 60).toPrecision(4)} min`),
                 timeout: config.timeout || Infinity,
                 // callback: null,  callbackPeriod: 10,
             });
             try { fs.writeFileSync(trainCache, JSON.stringify(trainedNet.toJSON(), null, 2)) } catch (e) { console.log(e) };
         } else {
+            let tTime = new Date();
             network.train(trainingData, {
                 iterations: config.iterations || 2000,
                 learningRate: config.learningRate || 0.001,
                 errorThresh: config.errorThresh || 0.001,
                 logPeriod: config.logPeriod || 10,
-                log: stats => console.log(stats)
+                log: stats => console.log(`${stats}, time: ${((new Date() - tTime) / 1000 / 60).toPrecision(4)} min`),
             });
             try { fs.writeFileSync(trainCache, JSON.stringify(network.toJSON(), null, 2)) } catch (e) { console.log(e) };
         }
@@ -50,13 +52,14 @@ function network(input, data) {
             const networkData = JSON.parse(fs.readFileSync(trainCache));
             network.fromJSON(networkData);
         } else {
+            let tTime = new Date();
             result = network.train(trainingData, {
                 iterations: config.iterations || 2000,
                 errorThresh: config.errorThresh || 0.011,
                 learningRate: config.learningRate || 0.001,
                 momentum: config.momentum || null,
                 logPeriod: config.logPeriod || 10,
-                log: stats => console.log(stats),
+                log: stats => console.log(`${stats}, time: ${((new Date() - tTime) / 1000 / 60).toPrecision(4)} min`),
                 timeout: config.timeout || Infinity,
                 // callback: null,  callbackPeriod: 10,
             });
