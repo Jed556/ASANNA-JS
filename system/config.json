@@ -1,9 +1,9 @@
 {
     "momentum": null,
-    "iterations": 2000,
-    "errorThresh": 0.005,
-    "learningRate": 0.001,
-    "logPeriod": 5,
+    "iterations": 3000,
+    "errorThresh": 0.0005,
+    "learningRate": 0.005,
+    "logPeriod": 10,
     "timeout": null,
     "continuous": false
 }
