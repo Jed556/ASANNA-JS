@@ -1,9 +1,10 @@
 {
     "momentum": null,
-    "iterations": 3000,
+    "iterations": 30,
     "errorThresh": 0.0005,
     "learningRate": 0.005,
     "logPeriod": 10,
     "timeout": null,
-    "continuous": false
+    "continuous": false,
+    "saveNet": true
 }

@@ -10,8 +10,11 @@ const defConfig = {
     momentum: 0.1,
     logPeriod: 5,
     timeout: Infinity,
+    continuous: false,
+    saveNet: true
 }
-
+let masterObj = [];
+let obj = [];
 
 /**
  * @param { String } input String to be predicted
@@ -26,7 +29,6 @@ function main(input, data) {
     }));
 
     const LSTM = new brain.recurrent.LSTM();
-
 
     if (config.continuous) {
         if (fs.existsSync(trainCache)) {
@@ -66,6 +68,7 @@ function load(network, cache) {
 */
 function train(network, data) {
     let tTime = new Date();
+
     console.log(`\nINITIALIZING...\n\n` +
         `iterations: ${config.iterations ?? defConfig.iterations + "     (Default)"}\n` +
         `errorThresh: ${config.errorThresh ?? defConfig.errorThresh + "   (Default)"}\n` +
@@ -73,7 +76,8 @@ function train(network, data) {
         `momentum: ${config.momentum ?? defConfig.momentum + "        (Default)"}\n` +
         `logPeriod: ${config.logPeriod ?? defConfig.logPeriod + "         (Default)"}\n` +
         `timeout: ${config.timeout ?? defConfig.timeout + "    (Default)"}\n` +
-        `continuous: ${config.continuous ?? defConfig.continuous + "    (Default)"}\n`
+        `continuous: ${config.continuous ?? defConfig.continuous + "    (Default)"}\n` +
+        `saveNet: ${config.saveNet ?? defConfig.saveNet + "        (Default)"}\n`
     )
     let result = network.train(data, {
         iterations: config.iterations ?? defConfig.iterations,
@@ -81,17 +85,20 @@ function train(network, data) {
         learningRate: config.learningRate ?? defConfig.learningRate,
         momentum: config.momentum ?? defConfig.momentum,
         logPeriod: config.logPeriod ?? defConfig.logPeriod,
+        timeout: config.timeout ?? Infinity,
         log: stats => {
             let log = stats.replace(/\s/g, '').split(/[,:]/);
-            //let eTime = (new Date(new Date() - tTime)).toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");    //Beta time handler
-            console.log(`TRAIN | iterations: ${(log[1]).padStart((config.iterations || defConfig.iterations).toString().length, "0")}, error: ${(+log[3]).toFixed(15)}, time: ${(new Date() - tTime).toTimeString()}`);
+            eTime = (new Date() - tTime).toTimeString();
+
+            let trainObj = { iterations: +log[1], error: +log[3], time: eTime };
+            obj.push(trainObj);
+
+            console.log(`TRAIN | iterations: ${(log[1]).padStart((config.iterations || defConfig.iterations).toString().length, "0")}, error: ${(+log[3]).toFixed(15)}, time: ${eTime}`);
         },
-        timeout: config.timeout ?? Infinity,
     });
-    console.log(`FINAL | iterations: ${result.iterations}, error: ${result.error.toFixed(15)}, time: ${(new Date() - tTime).toTimeString()}`);
-
-    try { fs.writeFileSync(trainCache, JSON.stringify(network.toJSON(), null, 2)) } catch (e) { console.log(e) };
-
+    fTime = (new Date() - tTime).toTimeString();
+    obj.push({ iterations: result.iterations, error: result.error, time: fTime });
+    console.log(`FINAL | iterations: ${result.iterations}, error: ${result.error.toFixed(15)}, time: ${fTime}`);
 }
 
 /**
@@ -101,15 +108,28 @@ function train(network, data) {
 */
 function run(network, input) {
     const output = network.run(input);
-    try { fs.writeFileSync(history, output) } catch (e) { console.log(e) };
+
+    if (fs.existsSync(history)) {
+        const historyJSON = require("../cache/history.json");
+        const trainID = historyJSON.length + 1;
+        masterObj.push({ id: trainID, train: obj, input: input, output: output });
+        historyObj = [...historyJSON, ...masterObj];
+        fs.writeFileSync(history, JSON.stringify(historyObj, null, 2));
+    } else {
+        masterObj.push({ id: 1, train: obj, input: input, output: output });
+        var json = formatJSON(JSON.stringify(masterObj));
+        fs.writeFileSync(history, json)
+        const historyJSON = require("../cache/history.json");
+        fs.writeFileSync(history, JSON.stringify(historyJSON, null, 2));
+    }
+
+    if (config.saveNet) fs.writeFileSync(trainCache, JSON.stringify(network.toJSON(), null, 2));
     return console.log(output);
 }
 
 /**
  * Convert (milli)seconds to time string (hh:mm:ss[:mss]).
- *
  * @param Boolean seconds
- *
  * @return String
  */
 Number.prototype.toTimeString = function (seconds) {
@@ -126,6 +146,16 @@ Number.prototype.toTimeString = function (seconds) {
     }
 
     return timeString;
+};
+
+function formatJSON(input) {
+    return input.replace(/"([^"]+?)":{(.+)}/g, function (string, key, value) {
+        var dict = {};
+        return '"' + key + '":{' + value.replace(/"([^"]+?)":{(.+?)}/g, function (string, key, value) {
+            dict[key] = dict[key] == undefined ? 1 : ++dict[key];
+            return '"' + key + '_' + dict[key] + '":{' + formatJSON(value) + '}';
+        }) + '}';
+    });
 };
 
 module.exports.network = main;
