@@ -10,35 +10,33 @@
 
     <script type="module">
         import "https://cdn.plot.ly/plotly-2.9.0.min.js"
+        // import data from "http://localhost:8888"
         function getData(index) {
             $.ajax({
-                url: "../cache/history.json",
+                url: "http://localhost:8888",
                 success: function (data) {
+                    console.log(data);
+
                     var dataArr = [];
                     for (var i = 0; i < data.length; i++) {
-                        var train = data[i];
+                        var train = data[i].train;
                         for (var j = 0; j < train.length; j++) {
-                            var iteration = data[j];
-                            for (var k = 0; k < iteration.length; k++) {
-                                dataArr.push(iteration[k]);
-                            }
+                            var err = train[j].error;
                         }
                     }
                     console.log(dataArr);
                     return dataArr[index];
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log('ERROR', textStatus, errorThrown);
                 }
             });
         }
 
+        var cnt = 0;
+
         Plotly.newPlot('accuracy-chart', [{
-            y: [getData()],
+            y: [getData(cnt)],
             type: 'line'
         }]);
 
-        var cnt = 0;
         setInterval(function () {
             Plotly.extendTraces('accuracy-chart', { y: [[getData(cnt)]] }, [0]);
             cnt++;
