@@ -31,7 +31,7 @@ function network(input, data) {
                 learningRate: config.learningRate || 0.001,
                 momentum: config.momentum || null,
                 logPeriod: config.logPeriod || 10,
-                log: stats => console.log(`${stats}, time: ${((new Date() - tTime) / 1000 / 60).toPrecision(4)} min`),
+                log: stats => console.log(`${stats}, time: ${((new Date() - tTime) / 1000) > 60 ? (((new Date() - tTime) / 1000 / 60)).toFixed(2) + "min" : (((new Date() - tTime) / 1000)).toFixed(2) + "sec"}`),
                 timeout: config.timeout || Infinity,
                 // callback: null,  callbackPeriod: 10,
             });
@@ -43,7 +43,7 @@ function network(input, data) {
                 learningRate: config.learningRate || 0.001,
                 errorThresh: config.errorThresh || 0.001,
                 logPeriod: config.logPeriod || 10,
-                log: stats => console.log(`${stats}, time: ${((new Date() - tTime) / 1000 / 60).toPrecision(4)} min`),
+                log: stats => console.log(`${stats}, time: ${((new Date() - tTime) / 1000) > 60 ? (((new Date() - tTime) / 1000 / 60)).toFixed(2) + "min" : (((new Date() - tTime) / 1000)).toFixed(2) + "sec"}`),
             });
             try { fs.writeFileSync(trainCache, JSON.stringify(network.toJSON(), null, 2)) } catch (e) { console.log(e) };
         }
@@ -59,7 +59,7 @@ function network(input, data) {
                 learningRate: config.learningRate || 0.001,
                 momentum: config.momentum || null,
                 logPeriod: config.logPeriod || 10,
-                log: stats => console.log(`${stats}, time: ${((new Date() - tTime) / 1000 / 60).toPrecision(4)} min`),
+                log: stats => console.log(`${stats}, time: ${((new Date() - tTime) / 1000) > 60 ? (((new Date() - tTime) / 1000 / 60)).toFixed(2) + "min" : (((new Date() - tTime) / 1000)).toFixed(2) + "sec"}`),
                 timeout: config.timeout || Infinity,
                 // callback: null,  callbackPeriod: 10,
             });
