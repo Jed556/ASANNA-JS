@@ -87,15 +87,15 @@ function train(network, data) {
         logPeriod: config.logPeriod ?? defConfig.logPeriod,
         timeout: config.timeout ?? Infinity,
         log: stats => {
-            let log = stats.replace(/\s/g, '').split(/[,:]/);
             eTime = (new Date() - tTime).toTimeString();
-
+            let log = stats.replace(/\s/g, '').split(/[,:]/);
             let trainObj = { iterations: +log[1], error: +log[3], time: eTime };
             obj.push(trainObj);
 
             console.log(`TRAIN | iterations: ${(log[1]).padStart((config.iterations || defConfig.iterations).toString().length, "0")}, error: ${(+log[3]).toFixed(15)}, time: ${eTime}`);
         },
     });
+
     fTime = (new Date() - tTime).toTimeString();
     obj.push({ iterations: result.iterations, error: result.error, time: fTime });
     console.log(`FINAL | iterations: ${result.iterations}, error: ${result.error.toFixed(15)}, time: ${fTime}`);

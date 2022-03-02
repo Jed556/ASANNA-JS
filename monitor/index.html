@@ -1,13 +1,61 @@
 <html>
 
 <head>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
 </head>
 
 <body>
     <div id="accuracy-chart"></div>
     <div id="speed-chart"></div>
+
+    <script type="module">
+        import "https://cdn.plot.ly/plotly-2.9.0.min.js"
+        function getData(index) {
+            $.ajax({
+                url: "../cache/history.json",
+                success: function (data) {
+                    var dataArr = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var train = data[i];
+                        for (var j = 0; j < train.length; j++) {
+                            var iteration = data[j];
+                            for (var k = 0; k < iteration.length; k++) {
+                                dataArr.push(iteration[k]);
+                            }
+                        }
+                    }
+                    console.log(dataArr);
+                    return dataArr[index];
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('ERROR', textStatus, errorThrown);
+                }
+            });
+        }
+
+        Plotly.newPlot('accuracy-chart', [{
+            y: [getData()],
+            type: 'line'
+        }]);
+
+        var cnt = 0;
+        setInterval(function () {
+            Plotly.extendTraces('accuracy-chart', { y: [[getData(cnt)]] }, [0]);
+            cnt++;
+
+            if (cnt > 500) {
+                Plotly.relayout('accuracy-chart', {
+                    xaxis: {
+                        range: [cnt - 500, cnt]
+                    }
+                });
+            }
+
+        }, 10);
+
+    </script>
+
 </body>
 
-<script src="../system/graph.js"></script>
-<script type="text/javascript" src="script.js"></script>
+
 </html>
