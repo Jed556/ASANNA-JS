@@ -6,8 +6,13 @@
 
 <body>
     <header>ASAN-NA Graph</header>
-    <div id="accuracy-chart"></div>
-    <div id="speed-chart"></div>
+    <div id="accuracy">
+        <h3>ACCURACY</h3>
+        <div id="accuracy-chart"></div>
+    </div>
+    <div id="time">
+        <div id="time-chart"></div>
+    </div>
 
     <script type="module">
         import "https://cdn.plot.ly/plotly-2.9.0.min.js"
@@ -36,11 +41,13 @@
                                 })
                             }
                         })
-
                     }
-                    console.log("Accuracy:\n" + errArr + "\nTime:\n" + timeArr);
+                },
+                error: function () {
+                    alert("JSON \"history.json\" not found");
                 }
             })
+            console.log("\nAccuracy:\n" + errArr + "\nTime:\n" + timeArr);
         }
 
         // Create initialize charts
