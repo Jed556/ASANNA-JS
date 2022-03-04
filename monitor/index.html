@@ -11,34 +11,40 @@
     <script type="module">
         import "https://cdn.plot.ly/plotly-2.9.0.min.js"
         // import data from "http://localhost:8888"
-        function getData(index) {
-            $.ajax({
-                url: "http://localhost:8888",
-                success: function (data) {
-                    console.log(data);
 
-                    var dataArr = [];
-                    for (var i = 0; i < data.length; i++) {
-                        var train = data[i].train;
-                        for (var j = 0; j < train.length; j++) {
-                            var err = train[j].error;
+        let dataArr = []
+        $.ajax({
+            url: "http://localhost:8888",
+            success: function (data) {
+                for (let i = 0; i < data.length; i++) {
+                    let trainArr = []
+                    data.forEach(val => {
+                        if (val.id == i && val.train) {
+                            console.log(val.train);
+                            trainArr.push(...val.train)
                         }
-                    }
-                    console.log(dataArr);
-                    return dataArr[index];
-                }
-            });
-        }
+                    })
 
-        var cnt = 0;
+                    trainArr.forEach(val => {
+                        dataArr.push(val.error)
+                    })
+                }
+                console.log(dataArr);
+                return dataArr[cnt]
+            }
+        })
 
         Plotly.newPlot('accuracy-chart', [{
-            y: [getData(cnt)],
+            y: [0],
             type: 'line'
         }]);
 
+        var cnt = 0;
         setInterval(function () {
-            Plotly.extendTraces('accuracy-chart', { y: [[getData(cnt)]] }, [0]);
+            if (cnt > dataArr.length - 1) {
+                cnt--;
+            }
+            Plotly.extendTraces('accuracy-chart', { y: [[dataArr[cnt]]] }, [0]);
             cnt++;
 
             if (cnt > 500) {
