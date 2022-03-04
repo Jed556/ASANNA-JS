@@ -5,56 +5,74 @@
 </head>
 
 <body>
+    <header>ASAN-NA Graph</header>
     <div id="accuracy-chart"></div>
     <div id="speed-chart"></div>
 
     <script type="module">
         import "https://cdn.plot.ly/plotly-2.9.0.min.js"
-        // import data from "http://localhost:8888"
 
-        let dataArr = []
-        $.ajax({
-            url: "http://localhost:8888",
-            success: function (data) {
-                for (let i = 0; i < data.length; i++) {
-                    let trainArr = []
-                    data.forEach(val => {
-                        if (val.id == i && val.train) {
-                            console.log(val.train);
-                            trainArr.push(...val.train)
-                        }
-                    })
+        // Declare global variables
+        var trainLength = 0;
+        var iterationArr = []
+        var errArr = []
+        var timeArr = []
+        var cnt = 0;
 
-                    trainArr.forEach(val => {
-                        dataArr.push(val.error)
-                    })
+        // Get data from server
+        function getData() {
+            $.ajax({
+                url: "http://localhost:8888",
+                success: function (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        data.forEach(val => {
+                            if (val.id == i && val.train) {
+                                console.log(val.train);
+                                trainLength += val.train.length;
+                                val.train.forEach(val => {
+                                    timeArr.push(val.iterations)
+                                    errArr.push(val.error)
+                                    timeArr.push(val.time)
+                                })
+                            }
+                        })
+
+                    }
+                    console.log("Accuracy:\n" + errArr + "\nTime:\n" + timeArr);
                 }
-                console.log(dataArr);
-                return dataArr[cnt]
-            }
-        })
+            })
+        }
 
+        // Create initialize charts
+        getData();
         Plotly.newPlot('accuracy-chart', [{
             y: [0],
             type: 'line'
         }]);
 
-        var cnt = 0;
-        setInterval(function () {
-            if (cnt > dataArr.length - 1) {
-                cnt--;
-            }
-            Plotly.extendTraces('accuracy-chart', { y: [[dataArr[cnt]]] }, [0]);
-            cnt++;
+        // Loop to update charts
+        setInterval(() => {
+            // Show updated data in charts
+            if (cnt < trainLength - 1) {
+                Plotly.extendTraces('accuracy-chart', { y: [[errArr[cnt]]] }, [0]);
+                cnt++;
 
-            if (cnt > 500) {
-                Plotly.relayout('accuracy-chart', {
-                    xaxis: {
-                        range: [cnt - 500, cnt]
-                    }
-                });
+                if (cnt > 500) {
+                    Plotly.relayout('accuracy-chart', {
+                        xaxis: {
+                            range: [cnt - 500, cnt]
+                        }
+                    });
+                }
+            } else {
+                // Read JSON Updates
+                trainLength = 0;
+                iterationArr = []
+                errArr = []
+                timeArr = []
+                let dataTo = setTimeout(() => { getData() }, 500);
+                clearTimeout(dataTo);
             }
-
         }, 10);
 
     </script>
