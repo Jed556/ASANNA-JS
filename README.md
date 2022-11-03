@@ -1,5 +1,8 @@
 # ASAN-NA
 **Automatic Sorting Applet using Neural Network Algorithms**
+<br>
+An LSTM Neural Network package for categorizing tickets or issues
+
 <br/>
 Development is still in progress...
 
